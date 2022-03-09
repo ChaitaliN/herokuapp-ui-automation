@@ -1,0 +1,2 @@
+TESTCASE_ID,TESTCASE_NAME,IS_POSITIVE_TEST,TITLE,SKU,DESCRIPTION,EXPECTED_RESULT
+PD01,Verify delete product successfully,true,fake,fake,fake,Product was successfully destroyed.

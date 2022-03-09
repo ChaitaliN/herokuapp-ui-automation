@@ -1,0 +1,2 @@
+TESTCASE_ID,TESTCASE_NAME,IS_POSITIVE_TEST,TITLE,SKU,DESCRIPTION,EXPECTED_RESULT
+PU01,Verify update product successfully,false,fakeProduct,fakeSku,fakeDescription,Product was successfully updated.

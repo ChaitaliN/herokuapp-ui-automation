@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="herokuappRegressionTestSuite" parallel="methods" thread-count="6" data-provider-thread-count="9">
+
+    <listeners>
+        <listener class-name="listener.TestEvent"/>
+<!--        <listener class-name="listener.ExtentReportListener"/>-->
+    </listeners>
+
+    <test name="TestRegressionOnQA">
+        <parameter name="env" value="staging"/>
+        <classes>
+            <!--            <class name="tests.WebhookTests"/>-->
+        </classes>
+    </test>
+</suite>

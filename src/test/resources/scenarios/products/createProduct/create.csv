@@ -1,0 +1,3 @@
+TESTCASE_ID,TESTCASE_NAME,IS_POSITIVE_TEST,TITLE,SKU,DESCRIPTION,EXPECTED_RESULT
+PCO1,Verify create product successfully,true,fake,fake,fake,Product was successfully created.
+PCO2,Verify create product with empty fields,false,,,,can't be blank

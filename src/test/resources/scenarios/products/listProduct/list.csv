@@ -1,0 +1,2 @@
+TESTCASE_ID,TESTCASE_NAME,IS_POSITIVE_TEST,TITLE,SKU,DESCRIPTION,EXPECTED_RESULT
+PCO1,Verify create product successfully,true,titleList,skuList,descriptionList,Product was successfully created.
