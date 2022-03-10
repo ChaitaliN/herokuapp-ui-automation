@@ -116,7 +116,7 @@ public class ProductsTests {
         // Create product
         Products products = new Products(appContext);
         products.navigateToNewProductPage();
-//        products.createProduct(data.getProductTitle(),data.getProductSku(),data.getProductDescription());
+        products.createProduct(data.getProductTitle(),data.getProductSku(),data.getProductDescription());
 
         // list product
        List <WebElement > matchedProductFromList = products.listProduct(data.getProductTitle());
@@ -129,9 +129,10 @@ public class ProductsTests {
         Assert.assertTrue(products.verifyViewLink().contains(data.getProductTitle()));
 
         // Assert edit link on product list
-        Assert.assertTrue(products.verifyEditLink().contains("Edit Product"),"Edit link is not working");
+        Assert.assertTrue(products.verifyEditLink(data.getProductTitle()).contains("Edit Product"),"Edit link is not working");
 
-//        Assert.assertTrue(products.verifyDeleteLink().contains("Edit Product"),"Edit link is not working");
+        // Assert delete link on product list and delete product as part of clean up
+        Assert.assertTrue(products.verifyDeleteLink(data.getProductTitle()).contains("Are you sure you want to delete this?"),"Delete link is not working");
 
 
     }

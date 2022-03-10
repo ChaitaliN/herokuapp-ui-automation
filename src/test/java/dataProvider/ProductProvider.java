@@ -24,7 +24,7 @@ public class ProductProvider extends CSVProvider {
         return toObject(context, "/products/deleteProduct/delete.csv", CreateDataSet.class);
     }
 
-    @DataProvider(name = "listProduct", parallel = true)
+    @DataProvider(name = "listProduct", parallel = false)
     public Iterator<Object> list(ITestContext context) throws IOException {
         return toObject(context, "/products/listProduct/list.csv", CreateDataSet.class);
     }

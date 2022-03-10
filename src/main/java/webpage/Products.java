@@ -22,10 +22,7 @@ public class Products {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(linkText = "Create one")
-    WebElement createProductLink;
-
-    @FindBy(linkText = "Products")
+    @FindBy(xpath = "//a[normalize-space()='Products']")
     WebElement productsText;
 
     @FindBy(id = "page_title")
@@ -53,7 +50,6 @@ public class Products {
     @FindBy(xpath = "//div[contains(text(),'Product was successfully updated.')]")
     WebElement productUpdatedMessage;
 
-
     @FindBy(xpath = "//div[contains(text(),'Product was successfully destroyed.')]")
     WebElement productDeletedMessage;
 
@@ -72,30 +68,17 @@ public class Products {
     @FindBy(xpath = "//a[@data-method='delete']")
     WebElement deleteProductButton;
 
-    @FindBy(xpath = "//tr[1]//td//a[@class='resource_id_link']")
-    WebElement productIdLink;
-
-    @FindBy(xpath = "//tr[1]//td[@class='col col-title']")
-    WebElement productColumnTitle;
-
-
-    @FindBy(xpath = "//tr[1]//td[@class='col col-sku']")
-    WebElement productColumnSku;
-
-    @FindBy(xpath = "//tr[1]//td[@class='col col-description']")
-    WebElement productColumnDescription;
-
-    @FindBy(xpath = "//tr[1]//td[@class='col col-created_at']")
-    WebElement productColumnCreatedAt;
-
-    @FindBy(xpath = "//tr[1]//td[@class='col col-updated_at']")
-    WebElement productColumnUpdatedAt;
-
     @FindBy(xpath = "//h3 [contains(text(),'Product Details')]")
     WebElement productDetailsText;
 
     String randomString = RandomStringUtils.random(5,true, true);
-
+    List<WebElement> matchedRowFromList = null;
+    WebElement viewLink;
+    WebElement editLink;
+    WebElement deleteLink;
+    List<WebElement> listSize;
+    String beforeXpath;
+    String afterXpath;
 
     public void navigateToNewProductPage() {
         productsText.click();
@@ -130,7 +113,7 @@ public class Products {
     }
 
     public void waitForElementVisibility(By element){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(element));
     }
 
@@ -177,28 +160,25 @@ public class Products {
     public void deleteProduct(){
         waitForElementVisibility(By.xpath("//a[@data-method='delete']"));
     deleteProductButton.click();
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    wait.until(ExpectedConditions.alertIsPresent());
     if(driver.switchTo().alert().getText().contains("Are you sure you want to delete this?")) {
         driver.switchTo().alert().accept();
     }
+    waitForElementVisibility(By.xpath("//div[contains(text(),'Product was successfully destroyed.')]"));
+
     }
 
     public String verifyProductDeletedConfirmationMessage(){
         return productDeletedMessage.getText();
     }
 
-    List<WebElement> matchedRowFromList = null;
-    WebElement viewLink;
-    WebElement editLink;
-    WebElement deleteLink;
-
     public List<WebElement> listProduct(String title){
         productsText.click();
-        List<WebElement> listSize= driver.findElements(By.xpath("//tbody//tr"));
-        System.out.println("size" + listSize.size());
-       String beforeXpath = "//tbody//tr[";
-       String afterXpath= "]//td[@class='col col-title']";
+        listSize = driver.findElements(By.xpath("//tbody//tr"));
+        beforeXpath = "//tbody//tr[";
+        afterXpath= "]//td[@class='col col-title']";
        for (int i = 1; i <= listSize.size() ; i++) {
-           System.out.println("in loop");
            WebElement productTitleFromList = driver.findElement(By.xpath(beforeXpath+i+afterXpath));
             if(productTitleFromList.getText().contains(title)){
                 matchedRowFromList = driver.findElements(By.xpath(beforeXpath+i+"]"));
@@ -216,15 +196,36 @@ public class Products {
         return productPageTitle.getText();
     }
 
-    public String verifyEditLink(){
+    public String verifyEditLink(String title){
         productsText.click();
+        waitForElementVisibility(By.id("page_title"));
+        for (int i = 1; i <= listSize.size() ; i++) {
+            WebElement productTitleFromList = driver.findElement(By.xpath(beforeXpath+i+afterXpath));
+            if(productTitleFromList.getText().contains(title)){
+                editLink = driver.findElement(By.xpath("//tr["+i+"]//a[text()='Edit']"));
+            }
+        }
         editLink.click();
         return driver.getTitle();
     }
 
-    public String verifyDeleteLink(){
+    public String verifyDeleteLink(String title){
+
         productsText.click();
+        waitForElementVisibility(By.id("page_title"));
+        for (int i = 1; i <= listSize.size() ; i++) {
+            WebElement productTitleFromList = driver.findElement(By.xpath(beforeXpath+i+afterXpath));
+            if(productTitleFromList.getText().contains(title)){
+                deleteLink = driver.findElement(By.xpath("//tr["+i+"]//a[text()='Delete']"));
+            }
+        }
         deleteLink.click();
-        return driver.switchTo().alert().getText();
+
+        String deletePopupMessage = this.driver.switchTo().alert().getText();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+        waitForElementVisibility(By.xpath("//div[contains(text(),'Product was successfully destroyed.')]"));
+        return deletePopupMessage;
     }
 }

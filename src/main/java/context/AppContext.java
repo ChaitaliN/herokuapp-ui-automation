@@ -22,4 +22,8 @@ public class AppContext {
     public WebDriver getDriver() {
         return Configuration.getDriver();
     }
+
+    public void setDriver(WebDriver driver) {
+        Configuration.setDriver(driver);
+    }
 }

@@ -22,8 +22,9 @@ public class TestEvent implements ITestListener {
         appContext = new AppContext(env);
 
         // set browser
-        Configuration.setDriver(LocalWebDriver.launchDriver(browser));
+//        Configuration.setDriver(LocalWebDriver.launchDriver(browser));
 
+        appContext.setDriver(LocalWebDriver.launchDriver(browser));
         // Pass context to test method
         result.getTestContext().setAttribute("appContext",appContext);
     }
@@ -31,7 +32,7 @@ public class TestEvent implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult result) {
         if (appContext.getDriver() != null) {
-            appContext.getDriver();
+            appContext.getDriver().quit();
         }
     }
 

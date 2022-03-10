@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Configuration {
+public class Configuration{
 
-    public static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<WebDriver>();
+    private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
 
     public Properties load (String propFileName){
 
