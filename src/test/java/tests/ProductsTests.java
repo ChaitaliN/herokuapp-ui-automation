@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import org.testng.log4testng.Logger;
 import webpage.Login;
 import webpage.Products;
 
@@ -19,13 +20,18 @@ import java.util.List;
 public class ProductsTests {
 
     AppContext appContext;
+    Logger log;
 
     @Test(dataProvider = "createProduct", dataProviderClass = ProductProvider.class, description = "Create product")
     public void createProduct(ITestContext context, CreateDataSet data) {
 
-        System.out.println("Thread:" + Thread.currentThread().getId() + data.toString());
-
+        // Get appContext from TestEvent
         appContext = (AppContext) context.getAttribute("appContext");
+
+        // Define logger
+        log = appContext.getLogger(ProductsTests.class);
+        log.info("Thread:" + Thread.currentThread().getId() + data.toString());
+
         // Pre-requisite Login
         Login login = new Login(appContext);
         login.loginWithValidCredentials();
@@ -61,8 +67,12 @@ public class ProductsTests {
     @Test(dataProvider = "updateProduct",dataProviderClass = ProductProvider.class, description = "Update product")
     public void updateProduct(ITestContext context,CreateDataSet data){
 
-        System.out.println("Thread:" + Thread.currentThread().getId() + data.toString());
+        // Get appContext from TestEvent
         appContext = (AppContext) context.getAttribute("appContext");
+
+        // Define logger
+        log = appContext.getLogger(ProductsTests.class);
+        log.info("Thread:" + Thread.currentThread().getId() + data.toString());
 
         // Pre-requisite Login and create product
         Login login = new Login(appContext);
@@ -87,8 +97,13 @@ public class ProductsTests {
 
     @Test(dataProvider = "deleteProduct",dataProviderClass = ProductProvider.class, description = "Delete product")
     public void deleteProduct(ITestContext context,CreateDataSet data){
-        System.out.println("Thread:" + Thread.currentThread().getId() + data.toString());
+
+        // Get appContext from TestEvent
         appContext = (AppContext) context.getAttribute("appContext");
+
+        // Define logger
+        log = appContext.getLogger(ProductsTests.class);
+        log.info("Thread:" + Thread.currentThread().getId() + data.toString());
 
         // Pre-requisite Login and create product
         Login login = new Login(appContext);
@@ -106,8 +121,13 @@ public class ProductsTests {
     }
     @Test(dataProvider = "listProduct",dataProviderClass = ProductProvider.class, description = "Delete product")
     public void list(ITestContext context,CreateDataSet data){
-        System.out.println("Thread:" + Thread.currentThread().getId() + data.toString());
+
+        // Get appContext from TestEvent
         appContext = (AppContext) context.getAttribute("appContext");
+
+        // Define logger
+        log = appContext.getLogger(ProductsTests.class);
+        log.info("Thread:" + Thread.currentThread().getId() + data.toString());
 
         // Pre-requisite Login and create product
         Login login = new Login(appContext);
@@ -121,7 +141,7 @@ public class ProductsTests {
         // list product
        List <WebElement > matchedProductFromList = products.listProduct(data.getProductTitle());
 
-       // Assert all list elements
+       // Assert Product sku and description in product list
        Assert.assertTrue(matchedProductFromList.get(0).getText().contains(data.getProductSku()));
        Assert.assertTrue(matchedProductFromList.get(0).getText().contains(data.getProductDescription()));
 
@@ -133,8 +153,6 @@ public class ProductsTests {
 
         // Assert delete link on product list and delete product as part of clean up
         Assert.assertTrue(products.verifyDeleteLink(data.getProductTitle()).contains("Are you sure you want to delete this?"),"Delete link is not working");
-
-
     }
 
 }

@@ -1,7 +1,7 @@
 package context;
 
 import org.openqa.selenium.WebDriver;
-
+import org.testng.log4testng.Logger;
 import java.util.Properties;
 
 public class AppContext {
@@ -25,5 +25,9 @@ public class AppContext {
 
     public void setDriver(WebDriver driver) {
         Configuration.setDriver(driver);
+    }
+
+    public Logger getLogger(Class pClass) {
+        return Logger.getLogger(pClass);
     }
 }

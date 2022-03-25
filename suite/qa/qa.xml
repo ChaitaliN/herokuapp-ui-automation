@@ -1,22 +1,23 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-
-<!--<suite name="herokuappRegressionTestSuite" parallel="methods" thread-count="3" data-provider-thread-count="3">-->
+<!--<suite name="herokuappRegressionTestSuite" parallel="methods" thread-count="3" data-provider-thread-count="1">-->
     <suite name="herokuappRegressionTestSuite">
 
     <listeners>
         <listener class-name="listener.TestEvent"/>
-<!--        <listener class-name="listener.ExtentReportListener"/>-->
     </listeners>
 
     <test name="TestRegressionOnQA">
         <parameter name="env" value="qa"/>
         <parameter name="browser" value="chrome"/>
+        <parameter name="local" value="no"/>
+        <parameter name="remote" value="yes"/>
+
         <classes>
 <!--                        <class name="tests.LoginTests"/>-->
             <class name ="tests.ProductsTests">
-<!--                    <methods>-->
-<!--                        <include name="list"/>-->
-<!--                    </methods>-->
+                    <methods>
+                        <include name="list"/>
+                    </methods>
             </class>
         </classes>
     </test>

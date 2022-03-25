@@ -10,7 +10,6 @@ public class Home {
         this.appContext = appContext;
         driver = appContext.getDriver();
         driver.get(appContext.config().getProperty("url"));
-        System.out.println(driver.getTitle());
     }
 
 }
